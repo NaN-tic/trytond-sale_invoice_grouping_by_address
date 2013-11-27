@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!-- This file is part of the sale_invoice_grouping_by_address module for
+Tryton. The COPYRIGHT file at the top level of this repository contains the
+full copyright notices and license terms. -->
+<tryton>
+    <data>
+        <record model="ir.ui.view" id="invoice_view_form">
+            <field name="model">account.invoice</field>
+            <field name="inherit" ref="account_invoice.invoice_view_form"/>
+            <field name="name">account_invoice_form</field>
+        </record>
+        <record model="ir.action.act_window" id="account_invoice.act_invoice_form">
+            <field name="name">Invoices</field>
+            <field name="res_model">account.invoice</field>
+        </record>
+        <record model="ir.action.act_window.view" id="act_invoice_form">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="invoice_view_form"/>
+            <field name="act_window" ref="account_invoice.act_invoice_form"/>
+        </record>
+    </data>
+</tryton>
