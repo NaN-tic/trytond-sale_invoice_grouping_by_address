@@ -14,17 +14,15 @@ class Sale:
     def _invoice_grouping_fields(self):
         res = super(Sale, self)._invoice_grouping_fields
         if self.shipment_address:
-            if (self.shipment_address.party.sale_invoice_grouping_method ==
+            if (self.party.sale_invoice_grouping_method ==
                     'shipment_address'):
-                res = [x for x in res if x != 'invoice_address']
-                res.append('shipment_address')
-                res = tuple(res)
+                res = res + ('shipment_address',)
         return res
 
     def _get_grouped_invoice_domain(self, invoice):
         invoice_domain = super(Sale, self)._get_grouped_invoice_domain(invoice)
         if self.shipment_address:
-            if (self.shipment_address.party.sale_invoice_grouping_method ==
+            if (self.party.sale_invoice_grouping_method ==
                     'shipment_address'):
                 invoice_domain[
                     invoice_domain.index(('shipment_address', '=', None))
