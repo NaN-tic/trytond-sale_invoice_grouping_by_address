@@ -27,3 +27,9 @@ class Invoice():
                 res['shipment_address'] = delivery_address.id
                 res['shipment_address.rec_name'] = delivery_address.rec_name
         return res
+
+    def _credit(self):
+        res = super(Invoice, self)._credit()
+        res['shipment_address'] = (self.shipment_address
+            and self.shipment_address.id or None)
+        return res
