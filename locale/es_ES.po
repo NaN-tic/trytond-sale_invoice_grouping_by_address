@@ -2,6 +2,10 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
+msgctxt "field:account.invoice,shipment_address:"
+msgid "Shipment Address"
+msgstr "Dirección envío"
+
 msgctxt "selection:party.party,sale_invoice_grouping_method:"
 msgid "By shipment address"
 msgstr "Dirección entrega"
