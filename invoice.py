@@ -19,8 +19,7 @@ class Invoice():
 
     def on_change_party(self):
         res = super(Invoice, self).on_change_party()
-        res['shipment_address'] = None
-        res['shipment_address.rec_name'] = None
+
         if self.party:
             delivery_address = self.party.address_get(type='delivery')
             if delivery_address:
