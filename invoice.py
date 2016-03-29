@@ -6,10 +6,10 @@ from trytond.pool import PoolMeta
 from trytond.pyson import Eval
 
 __all__ = ['Invoice']
-__metaclass__ = PoolMeta
 
 
-class Invoice():
+class Invoice:
+    __metaclass__ = PoolMeta
     __name__ = 'account.invoice'
     shipment_address = fields.Many2One('party.address', 'Shipment Address',
         domain=[('party', '=', Eval('party'))], states={
