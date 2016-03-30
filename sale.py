@@ -29,8 +29,8 @@ class Sale:
                     ] = ('shipment_address', '=', self.shipment_address)
         return invoice_domain
 
-    def _get_invoice_sale(self, invoice_type):
-        invoice = super(Sale, self)._get_invoice_sale(invoice_type)
+    def _get_invoice_sale(self):
+        invoice = super(Sale, self)._get_invoice_sale()
         if not hasattr(invoice, 'shipment_address') and self.shipment_address:
             invoice.shipment_address = self.shipment_address
         return invoice
