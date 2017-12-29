@@ -12,8 +12,6 @@ __metaclass__ = PoolMeta
 class Invoice():
     __name__ = 'account.invoice'
     shipment_address = fields.Many2One('party.address', 'Shipment Address',
-        domain=['OR', [('party', '=', Eval('party')),
-                    ('party', '=', Eval('shipment_party'))],],
         states={'readonly': ~Eval('state').in_(['draft', 'validated']),
         },
         depends=['party', 'state'])
