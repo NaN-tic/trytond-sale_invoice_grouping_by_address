@@ -12,9 +12,16 @@ __metaclass__ = PoolMeta
 class Invoice():
     __name__ = 'account.invoice'
     shipment_address = fields.Many2One('party.address', 'Shipment Address',
-        states={'readonly': ~Eval('state').in_(['draft', 'validated']),
-        },
+        domain=[('party', '=', Eval('party'))], states={
+            'readonly': ~Eval('state').in_(['draft', 'validated']),
+            },
         depends=['party', 'state'])
+
+    @classmethod
+    def __setup__(cls):
+        super(Invoice, cls).__setup__()
+        if hasattr(cls, 'shipment_party'):
+            cls.shipment_address.domain = [('party','=',Eval('shipment_party'))]
 
     @fields.depends('party')
     def on_change_party(self):
