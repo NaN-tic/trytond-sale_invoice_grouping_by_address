@@ -3,13 +3,13 @@
 # the full copyright notices and license terms.
 from trytond.model import fields
 from trytond.pool import PoolMeta
-from trytond.pyson import Eval
+from trytond.pyson import Bool, Eval, If
 
 __all__ = ['Invoice']
-__metaclass__ = PoolMeta
 
 
-class Invoice():
+class Invoice:
+    __metaclass__ = PoolMeta
     __name__ = 'account.invoice'
     shipment_address = fields.Many2One('party.address', 'Shipment Address',
         domain=[('party', '=', Eval('party'))], states={
@@ -17,15 +17,40 @@ class Invoice():
             },
         depends=['party', 'state'])
 
-    @fields.depends('party')
+    @classmethod
+    def __setup__(cls):
+        super(Invoice, cls).__setup__()
+        if hasattr(cls, 'shipment_party'):
+            domain = cls.shipment_address.domain
+            if domain:
+                new_domain = [
+                    ('party', '=', If(Bool(Eval('shipment_party')),
+                            Eval('shipment_party'), Eval('party'))),
+                    ]
+                cls.shipment_address.domain = new_domain
+                cls.shipment_address.depends.append('shipment_party')
+
+    @fields.depends('party', 'shipment_party')
     def on_change_party(self):
         super(Invoice, self).on_change_party()
 
-        self.shipment_address = None
-        if self.party:
+        delivery_address = None
+        if self.party and not self.shipment_party:
             delivery_address = self.party.address_get(type='delivery')
-            if delivery_address:
-                self.shipment_address = delivery_address
+        if self.shipment_party:
+            delivery_address = self.shipment_party.address_get(type='delivery')
+        self.shipment_address = delivery_address
+
+    @fields.depends('party', 'shipment_party')
+    def on_change_shipment_party(self):
+        super(Invoice, self).on_change_shipment_party()
+
+        delivery_address = None
+        if self.party and not self.shipment_party:
+            delivery_address = self.party.address_get(type='delivery')
+        if self.shipment_party:
+            delivery_address = self.shipment_party.address_get(type='delivery')
+        self.shipment_address = delivery_address
 
     def _credit(self):
         res = super(Invoice, self)._credit()
