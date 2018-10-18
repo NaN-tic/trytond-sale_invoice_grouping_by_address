@@ -6,8 +6,7 @@ from trytond.pool import PoolMeta
 __all__ = ['Sale']
 
 
-class Sale:
-    __metaclass__ = PoolMeta
+class Sale(metaclass=PoolMeta):
     __name__ = 'sale.sale'
 
     @property
@@ -24,9 +23,13 @@ class Sale:
         if self.shipment_address:
             if (self.party.sale_invoice_grouping_method ==
                     'shipment_address'):
-                invoice_domain[
-                    invoice_domain.index(('shipment_address', '=', None))
-                    ] = ('shipment_address', '=', self.shipment_address)
+                if ('shipment_address', '=', None) in invoice_domain:
+                    invoice_domain[
+                        invoice_domain.index(('shipment_address', '=', None))
+                        ] = ('shipment_address', '=', self.shipment_address)
+                else:
+                    invoice_domain.append(
+                        ('shipment_address', '=', self.shipment_address))
         return invoice_domain
 
     def _get_invoice_sale(self):
