@@ -21,14 +21,12 @@ class Invoice:
     def __setup__(cls):
         super(Invoice, cls).__setup__()
         if hasattr(cls, 'shipment_party'):
-            domain = cls.shipment_address.domain
-            if domain:
-                new_domain = [
-                    ('party', '=', If(Bool(Eval('shipment_party')),
-                            Eval('shipment_party'), Eval('party'))),
-                    ]
-                cls.shipment_address.domain = new_domain
-                cls.shipment_address.depends.append('shipment_party')
+            new_domain = [
+                ('party', '=', If(Bool(Eval('shipment_party')),
+                        Eval('shipment_party'), Eval('party'))),
+                ]
+            cls.shipment_address.domain = new_domain
+            cls.shipment_address.depends.append('shipment_party')
 
     @fields.depends('party', 'shipment_party')
     def on_change_party(self):
