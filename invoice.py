@@ -26,17 +26,18 @@ class Invoice(metaclass=PoolMeta):
                 ]
             cls.shipment_address.domain = new_domain
             cls.shipment_address.depends.append('shipment_party')
+            cls.on_change_party.depends.append('shipment_party')
 
-    @fields.depends('party', 'shipment_party')
     def on_change_party(self):
         super(Invoice, self).on_change_party()
 
-        delivery_address = None
-        if self.party and not self.shipment_party:
-            delivery_address = self.party.address_get(type='delivery')
-        if self.shipment_party:
-            delivery_address = self.shipment_party.address_get(type='delivery')
-        self.shipment_address = delivery_address
+        if hasattr(self, 'shipment_party'):
+            delivery_address = None
+            if self.party and not self.shipment_party:
+                delivery_address = self.party.address_get(type='delivery')
+            if self.shipment_party:
+                delivery_address = self.shipment_party.address_get(type='delivery')
+            self.shipment_address = delivery_address
 
     def _credit(self):
         res = super(Invoice, self)._credit()
