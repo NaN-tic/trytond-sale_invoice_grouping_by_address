@@ -26,7 +26,7 @@ class Invoice(metaclass=PoolMeta):
                 ]
             cls.shipment_address.domain = new_domain
             cls.shipment_address.depends.append('shipment_party')
-            cls.on_change_party.depends.append('shipment_party')
+            cls.on_change_party.depends.add('shipment_party')
 
     def on_change_party(self):
         super(Invoice, self).on_change_party()
