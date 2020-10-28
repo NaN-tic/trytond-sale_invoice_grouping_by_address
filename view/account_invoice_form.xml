@@ -3,8 +3,7 @@
 Tryton. The COPYRIGHT file at the top level of this repository contains the
 full copyright notices and license terms. -->
 <data>
-    <xpath expr="/form/field[@name=&quot;invoice_address&quot;]"
-            position="after">
+    <xpath expr="/form/field[@name='reference']" position="after">
         <label name="shipment_address"/>
         <field name="shipment_address"/>
     </xpath>
