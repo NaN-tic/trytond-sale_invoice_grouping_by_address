@@ -3,7 +3,7 @@
 # the full copyright notices and license terms.
 from trytond.model import fields
 from trytond.pool import PoolMeta
-from trytond.pyson import Bool, Eval, If
+from trytond.pyson import Eval
 
 __all__ = ['Invoice']
 
@@ -15,18 +15,6 @@ class Invoice(metaclass=PoolMeta):
             'readonly': ~Eval('state').in_(['draft', 'validated']),
             },
         depends=['party', 'state'])
-
-    @classmethod
-    def __setup__(cls):
-        super(Invoice, cls).__setup__()
-        if hasattr(cls, 'shipment_party'):
-            new_domain = [
-                ('party', '=', If(Bool(Eval('shipment_party')),
-                        Eval('shipment_party'), Eval('party'))),
-                ]
-            cls.shipment_address.domain = new_domain
-            cls.shipment_address.depends.append('shipment_party')
-            cls.on_change_party.depends.add('shipment_party')
 
     def on_change_party(self):
         super(Invoice, self).on_change_party()
