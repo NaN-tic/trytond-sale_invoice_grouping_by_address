@@ -13,8 +13,7 @@ class Invoice(metaclass=PoolMeta):
     shipment_address = fields.Many2One('party.address', 'Shipment Address',
         domain=[('party', '=', Eval('party'))], states={
             'readonly': ~Eval('state').in_(['draft', 'validated']),
-            },
-        depends=['party', 'state'])
+            })
 
     def on_change_party(self):
         super(Invoice, self).on_change_party()
