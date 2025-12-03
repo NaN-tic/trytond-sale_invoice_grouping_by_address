@@ -32,8 +32,8 @@ class Sale(metaclass=PoolMeta):
                         ('shipment_address', '=', self.shipment_address))
         return invoice_domain
 
-    def _get_invoice_sale(self):
-        invoice = super(Sale, self)._get_invoice_sale()
+    def _get_invoice(self):
+        invoice = super(Sale, self)._get_invoice()
         if not hasattr(invoice, 'shipment_address') and self.shipment_address:
             invoice.shipment_address = self.shipment_address
         return invoice
