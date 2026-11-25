@@ -1,0 +1,16 @@
+#
+msgid ""
+msgstr ""
+"Language: km\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "field:account.invoice,shipment_address:"
+msgid "Shipment Address"
+msgstr "អាសយដ្ឋានដឹកជញ្ជូន"
+
+msgctxt "selection:party.party,sale_invoice_grouping_method:"
+msgid "By shipment address"
+msgstr "តាមអាសយដ្ឋានដឹកជញ្ជូន"
